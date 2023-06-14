@@ -5,14 +5,14 @@ class Item < ApplicationRecord
   validates :image, presence: true
   validates :title, presence: true
   validates :describe, presence: true
-  validates :category_id, presence: true
-  validates :status_id, presence: true
-  validates :shipping_cost_id, presence: true
-  validates :prefecture_id, presence: true
-  validates :shipping_day_id, presence: true
+  validates :category_id, presence: true, numericality: { other_than: 1 }
+  validates :status_id, presence: true, numericality: { other_than: 1 }
+  validates :shipping_cost_id, presence: true, numericality: { other_than: 1 }
+  validates :prefecture_id, presence: true, numericality: { other_than: 1 }
+  validates :shipping_day_id, presence: true, numericality: { other_than: 1 }
   validates :price, presence: true
 
-  extend ActiveHash::Associations::AcitiveRecordExtensions
+  extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to :category
   belongs_to :status
   belongs_to :shipping_day
