@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
+  before_action :set_item, only: [:index, :create]
   def index
-    @order = OrderForm.new
-    @item = Item.find(params[:item_id])
+    @order_form = OrderForm.new
   end
 
   def create
@@ -10,11 +10,15 @@ class OrdersController < ApplicationController
       @order_form.save
       redirect_to root_path
     else
-      render :new
+      render 'index'
     end
   end
 
   private
+
+  def set_item
+    @item = Item.find(params[:item_id])
+  end
   
   def order_form_params
     params.require(:order_form).permit(:post_code, :prefecture_id, :municipalities, :address, :building_name, :phone_number).merge(item_id: params[:item_id], user_id: current_user.id)
