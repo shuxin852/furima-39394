@@ -20,5 +20,4 @@ class Item < ApplicationRecord
   belongs_to :shipping_day
   belongs_to :shipping_cost
   belongs_to :prefecture
-
 end
