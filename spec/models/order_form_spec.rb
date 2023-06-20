@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe OrderForm, type: :model do
   before do
-    @order_form = FactoryBot.build(:order_form)
+    @user = FactoryBot.create(:user)
+    @item = FactoryBot.create(:item)
+    @order_form = FactoryBot.build(:order_form, user_id: @user.id, item_id: @item.id)
+    sleep(0.01)
   end
 
   describe '商品購入機能' do
@@ -66,8 +69,13 @@ RSpec.describe OrderForm, type: :model do
         @order_form.valid?
         expect(@order_form.errors.full_messages).to include("Phone number is invalid. Phone number should be 10-11 digits")
       end
-      it 'phone_numberは10桁以上11桁以内でないと購入できない' do
+      it 'phone_numberは9桁以下では購入できない' do
         @order_form.phone_number = '123456789'
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include("Phone number is invalid. Phone number should be 10-11 digits")
+      end
+      it 'phone_numberは12桁以上では購入できない' do
+        @order_form.phone_number = '123456789123'
         @order_form.valid?
         expect(@order_form.errors.full_messages).to include("Phone number is invalid. Phone number should be 10-11 digits")
       end
@@ -80,6 +88,16 @@ RSpec.describe OrderForm, type: :model do
         @order_form.token = ''
         @order_form.valid?
         expect(@order_form.errors.full_messages).to include("Token can't be blank")
+      end
+      it 'itemが存在しなければ購入できない' do
+        @order_form.item_id = nil
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include("Item can't be blank")
+      end
+      it 'userが存在しなければ購入できない' do
+        @order_form.user_id = nil
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include("User can't be blank")
       end
     end
   end
