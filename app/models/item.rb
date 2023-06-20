@@ -21,7 +21,4 @@ class Item < ApplicationRecord
   belongs_to :shipping_cost
   belongs_to :prefecture
 
-  def sold_out?
-    order.present?
-  end
 end
