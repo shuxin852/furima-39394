@@ -53,6 +53,9 @@ test:
 #
 production:
   <<: *default
-  adapter: postgresql
+  adapter: mysql12
+  database: furima-39394_production
+  username: root
   url: <%= ENV['DATABASE_URL'] %>
+  socket: /var/lib/mysql/mysql.sock
 
